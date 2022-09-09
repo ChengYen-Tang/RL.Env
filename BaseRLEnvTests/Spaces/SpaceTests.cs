@@ -1,7 +1,4 @@
-﻿using FluentResults;
-using NumpyLib;
-
-namespace BaseRLEnvTests.Spaces;
+﻿namespace BaseRLEnvTests.Spaces;
 
 [TestClass]
 public class SpaceTests

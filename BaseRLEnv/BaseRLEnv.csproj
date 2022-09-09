@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentResults" Version="3.11.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.80" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.80.3" />
   </ItemGroup>
   <ItemGroup>
 	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

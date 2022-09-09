@@ -8,7 +8,7 @@ public class SeedingTests
     [TestMethod]
     public void TestSeedIsNull()
     {
-        (random npRandom, uint seed) = Seeding.NpRandom();
+        (np.random npRandom, uint seed) = Seeding.NpRandom();
         Assert.IsNotNull(npRandom);
         Assert.AreNotEqual<uint>(0, seed);
         var a = npRandom.rand();
@@ -18,7 +18,7 @@ public class SeedingTests
     [TestMethod]
     public void TestSeed()
     {
-        (random npRandom, uint seed) = Seeding.NpRandom(0);
+        (np.random npRandom, uint seed) = Seeding.NpRandom(0);
         Assert.IsNotNull(npRandom);
         Assert.AreEqual<uint>(0, seed);
         Assert.AreEqual(0.5488, npRandom.rand(), 0.0001);

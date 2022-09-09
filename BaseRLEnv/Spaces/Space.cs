@@ -1,5 +1,4 @@
 ﻿using BaseRLEnv.Utils;
-using FluentResults;
 
 namespace BaseRLEnv.Spaces;
 
@@ -10,13 +9,17 @@ public abstract class Space
 {
     public shape Shape { get; private init; }
     public dtype Type { get; private init; }
-    public random NpRandom { get; private set; }
+    public np.random NpRandom { get; private set; }
 
-    public Space(shape shape, dtype type, random npRandom)
-        => (Shape, Type, NpRandom) = (shape, type, npRandom);
+    public Space(shape shape, dtype type, np.random npRandom)
+    {
+        CheckInitParameter(shape, type, npRandom);
+        (Shape, Type, NpRandom) = (shape, type, npRandom);
+    }
 
     public Space(shape shape, dtype type, uint? seed = null)
     {
+        CheckInitParameter(shape, type);
         (Shape, Type) = (shape, type);
         Seed(seed);
     }
@@ -27,6 +30,11 @@ public abstract class Space
     /// <returns></returns>
     public abstract ndarray Sample();
 
+    /// <summary>
+    /// Generates an ndarray whose shape and type are consistent with the space definition.
+    /// The default content is 0.
+    /// </summary>
+    /// <returns></returns>
     public virtual ndarray Generate()
         => np.zeros(Shape, Type);
 
@@ -53,5 +61,17 @@ public abstract class Space
     {
         (NpRandom, uint rndSeed) = Seeding.NpRandom(seed);
         return rndSeed;
+    }
+
+    private static void CheckInitParameter(shape shape, dtype type)
+    {
+        ArgumentNullException.ThrowIfNull(shape);
+        ArgumentNullException.ThrowIfNull(type);
+    }
+
+    private static void CheckInitParameter(shape shape, dtype type, np.random npRandom)
+    {
+        CheckInitParameter(shape, type);
+        ArgumentNullException.ThrowIfNull(npRandom);
     }
 }

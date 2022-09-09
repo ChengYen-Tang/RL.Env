@@ -1,3 +1,4 @@
 ﻿global using BaseRLEnv;
+global using FluentResults;
 global using NumpyDotNet;
-global using static NumpyDotNet.np;
+global using NumpyLib;
