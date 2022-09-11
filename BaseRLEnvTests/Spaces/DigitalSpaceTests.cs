@@ -76,20 +76,12 @@ public class DigitalSpaceTests
         MockDigitalSpace _ = new(np.zeros(shape, type), np.ones(shape, np.Float32), shape, type);
     }
 
-    public static ICollection<object[]> HeighLessLowTestData
-        => new[]
-        {
-            new[] { np.full(new shape(2, 3), 1, np.Float32), np.full(new shape(2, 3), 1, np.Float32)},
-            new[] { np.full(new shape(2, 3), 2, np.Float32), np.full(new shape(2, 3), 1, np.Float32)},
-        };
-
     [ExpectedException(typeof(ArgumentException), "Low must be less than high.")]
-    [DynamicData(nameof(HeighLessLowTestData))]
     [TestMethod]
-    public void TestCheckInitParameterCheckHeighLessLow(ndarray low, ndarray high)
+    public void TestCheckInitParameterCheckHeighLessLow()
     {
         shape shape = new(2, 3);
-        MockDigitalSpace _ = new(low, high, shape, np.Float32);
+        MockDigitalSpace _ = new(np.full(new shape(2, 3), 2, np.Float32), np.full(new shape(2, 3), 1, np.Float32), shape, np.Float32);
     }
 
     private MockDigitalSpace mock = null!;

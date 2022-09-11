@@ -36,13 +36,11 @@ public class BoxTests
         Box _ = new(0, 1, new(2, 3), type);
     }
 
-    [DataRow(1, 1)]
-    [DataRow(2, 1)]
     [ExpectedException(typeof(ArgumentException), "Low must be less than high.")]
     [TestMethod]
-    public void TestCheckLowGreaterOrEqualHigh(double low, double high)
+    public void TestCheckLowGreaterOrEqualHigh()
     {
-        Box _ = new(low, high, new(2, 3), np.Int32);
+        Box _ = new(2, 1, new(2, 3), np.Int32);
     }
 
     private Box box = null!;

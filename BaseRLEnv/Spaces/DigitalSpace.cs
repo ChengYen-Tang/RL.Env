@@ -81,7 +81,7 @@ public abstract class DigitalSpace : Space
             throw new ArgumentException("The low array does not match the type defined by the condition.");
         if (high.Dtype != type)
             throw new ArgumentException("The high array does not match the type defined by the condition.");
-        if (np.anyb(low >= high))
+        if (np.anyb(low > high))
             throw new ArgumentException("Low must be less than high.");
     }
 
