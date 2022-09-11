@@ -51,7 +51,5 @@ public class MockSpace : Space
         : base(shape, type) { }
 
     public override ndarray Sample()
-    {
-        throw new NotImplementedException();
-    }
+        => throw new NotImplementedException();
 }
