@@ -19,17 +19,11 @@ public class Box : DigitalSpace
 {
     public Box(double low, double high, shape shape, dtype type, uint? seed = null)
         : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, seed)
-    {
-        if (low >= high)
-            throw new ArgumentException("Low must be less than high.");
-    }
+    { }
 
     public Box(double low, double high, shape shape, dtype type, np.random npRandom)
         : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, npRandom)
-    {
-        if (low >= high)
-            throw new ArgumentException("Low must be less than high.");
-    }
+    { }
 
     public Box(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
         : base(low, high, shape, type, seed) { }
@@ -37,8 +31,12 @@ public class Box : DigitalSpace
     public Box(ndarray low, ndarray high, shape shape, dtype type, np.random npRandom)
         : base(low, high, shape, type, npRandom) { }
 
-    protected override bool CheckType(dtype type)
-        => type == np.Int8 || type == np.Int16 || type == np.Int32 || type == np.Int64 ||
-        type == np.UInt8 || type == np.UInt16 || type == np.UInt32 || type == np.UInt64 ||
-        type == np.Float32 || type == np.Float64;
+    protected override Result CheckType(dtype type)
+    {
+        if (type == np.Int8 || type == np.Int16 || type == np.Int32 || type == np.Int64 ||
+            type == np.UInt8 || type == np.UInt16 || type == np.UInt32 || type == np.UInt64 ||
+            type == np.Float32 || type == np.Float64)
+            return Result.Ok();
+        return Result.Fail("Box only supports numeric types, but not support Decimal type.");
+    }
 }

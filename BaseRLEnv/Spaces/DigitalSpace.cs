@@ -64,14 +64,15 @@ public abstract class DigitalSpace : Space
         return Result.Ok();
     }
 
-    protected abstract bool CheckType(dtype type);
+    protected abstract Result CheckType(dtype type);
 
     private void CheckInitParameter(ndarray low, ndarray high, shape shape, dtype type)
     {
         ArgumentNullException.ThrowIfNull(low);
         ArgumentNullException.ThrowIfNull(high);
-        if (!CheckType(type))
-            throw new ArgumentException("Box only supports digital types, but not support Decimal type.");
+        Result checkResult = CheckType(type);
+        if (checkResult.IsFailed)
+            throw new ArgumentException(checkResult.Errors[0].Message);
         if (low.shape != shape)
             throw new ArgumentException("The low array does not match the shape defined by the condition.");
         if (high.shape != shape)
@@ -80,6 +81,8 @@ public abstract class DigitalSpace : Space
             throw new ArgumentException("The low array does not match the type defined by the condition.");
         if (high.Dtype != type)
             throw new ArgumentException("The high array does not match the type defined by the condition.");
+        if (np.anyb(low >= high))
+            throw new ArgumentException("Low must be less than high.");
     }
 
     private void CoculateBounded()

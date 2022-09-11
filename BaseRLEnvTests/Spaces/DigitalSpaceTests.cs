@@ -31,7 +31,7 @@ public class DigitalSpaceTests
         MockDigitalSpace _ = new(np.zeros(shape, type), np.ones(shape, type), shape, type);
     }
 
-    [ExpectedException(typeof(ArgumentException), "Box only supports numeric types, but not support Decimal type.")]
+    [ExpectedException(typeof(ArgumentException), "Type error.")]
     [DynamicData(nameof(NotSupportType))]
     [TestMethod]
     public void TestCheckInitParameterCheckNotSupportType(dtype type)
@@ -74,6 +74,22 @@ public class DigitalSpaceTests
         dtype type = np.Int32;
         shape shape = new(2, 3);
         MockDigitalSpace _ = new(np.zeros(shape, type), np.ones(shape, np.Float32), shape, type);
+    }
+
+    public static ICollection<object[]> HeighLessLowTestData
+        => new[]
+        {
+            new[] { np.full(new shape(2, 3), 1, np.Float32), np.full(new shape(2, 3), 1, np.Float32)},
+            new[] { np.full(new shape(2, 3), 2, np.Float32), np.full(new shape(2, 3), 1, np.Float32)},
+        };
+
+    [ExpectedException(typeof(ArgumentException), "Low must be less than high.")]
+    [DynamicData(nameof(HeighLessLowTestData))]
+    [TestMethod]
+    public void TestCheckInitParameterCheckHeighLessLow(ndarray low, ndarray high)
+    {
+        shape shape = new(2, 3);
+        MockDigitalSpace _ = new(low, high, shape, np.Float32);
     }
 
     private MockDigitalSpace mock = null!;
@@ -125,5 +141,10 @@ public class MockDigitalSpace : DigitalSpace
     public MockDigitalSpace(ndarray low, ndarray high, shape shape, dtype type)
         : base(low, high, shape, type) { }
 
-    protected override bool CheckType(dtype type) => type == np.Float32;
+    protected override Result CheckType(dtype type)
+    {
+        if (type == np.Float32)
+            return Result.Ok();
+        return Result.Fail("Type error.");
+    }
 }
