@@ -94,7 +94,7 @@ public class DigitalSpaceTests
     [TestMethod]
     public void TestCheckConditions()
     {
-        Result result = mock.CheckConditions(np.array(new int[,] { { 4, 5, 6 }, { 6, 5, 4 } }, type));
+        Result result = mock.CheckConditions(np.array(new int[,] { { 7, 5, 6 }, { 6, 5, 0 } }, type));
         Assert.IsTrue(result.IsSuccess);
     }
 
