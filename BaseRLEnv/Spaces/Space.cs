@@ -7,9 +7,9 @@ namespace BaseRLEnv.Spaces;
 /// </summary>
 public abstract class Space
 {
-    public shape Shape { get; private init; }
-    public dtype Type { get; private init; }
-    public np.random NpRandom { get; private set; }
+    public shape Shape { get; private init; } = null!;
+    public dtype Type { get; private init; } = null!;
+    public np.random NpRandom { get; private set; } = null!;
 
     public Space(shape shape, dtype type, np.random npRandom)
     {

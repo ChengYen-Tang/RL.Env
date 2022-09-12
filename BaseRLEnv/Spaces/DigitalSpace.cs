@@ -5,10 +5,10 @@
 /// </summary>
 public abstract class DigitalSpace : Space
 {
-    public ndarray Low { get; private init; }
-    public ndarray High { get; private init; }
-    protected ndarray BoundedBelow { get; private set; }
-    protected ndarray BoundedAbove { get; private set; }
+    public ndarray Low { get; private init; } = null!;
+    public ndarray High { get; private init; } = null!;
+    protected ndarray BoundedBelow { get; private set; } = null!;
+    protected ndarray BoundedAbove { get; private set; } = null!;
 
     public DigitalSpace(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
         : base(shape, type, seed)
@@ -40,10 +40,10 @@ public abstract class DigitalSpace : Space
         ndarray bounded = BoundedBelow & BoundedAbove;
         ndarray High = Type.Kind == 'f' || Type.Kind == 'd' ? this.High : this.High + 1;
         ndarray sample = np.empty(Shape, Type);
-        sample[unbounded] = NpRandom.normal(0.0, 1.0, (unbounded[unbounded] as ndarray).shape);
-        sample[lowBounded] = NpRandom.exponential(1.0, (lowBounded[lowBounded] as ndarray).shape) + Low[lowBounded];
-        sample[uppBounded] = -NpRandom.exponential(1.0, (uppBounded[uppBounded] as ndarray).shape) + High[uppBounded];
-        sample[bounded] = NpRandom.uniform(Low[bounded], High[bounded], (bounded[bounded] as ndarray).shape);
+        sample[unbounded] = NpRandom.normal(0.0, 1.0, (unbounded[unbounded] as ndarray)!.shape);
+        sample[lowBounded] = NpRandom.exponential(1.0, (lowBounded[lowBounded] as ndarray)!.shape) + Low[lowBounded];
+        sample[uppBounded] = -NpRandom.exponential(1.0, (uppBounded[uppBounded] as ndarray)!.shape) + High[uppBounded];
+        sample[bounded] = NpRandom.uniform(Low[bounded], High[bounded], (bounded[bounded] as ndarray)!.shape);
         return sample;
     }
 
