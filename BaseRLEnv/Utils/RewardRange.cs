@@ -19,6 +19,6 @@ public sealed class RewardRange
     {
         ArgumentNullException.ThrowIfNull(reward);
         if (reward > Max || reward < Min)
-            throw new Error("Reward must be >=Min, and reward must be <=Max.");
+            throw new Error($"Reward must be >= {Min}, and reward must be <= {Max}.");
     }
 }

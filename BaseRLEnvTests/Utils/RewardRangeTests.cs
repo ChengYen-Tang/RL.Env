@@ -35,7 +35,7 @@ public class RewardRangeTests
 
     [DataRow(101)]
     [DataRow(-1)]
-    [ExpectedException(typeof(Error), "Reward must be >=Min, and reward must be <=Max.")]
+    [ExpectedException(typeof(Error), "Reward must be >= Min, and reward must be <= Max.")]
     [TestMethod]
     public void TestCheckConditionsError(double reward)
     {
