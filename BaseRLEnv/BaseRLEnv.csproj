@@ -5,6 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<LangVersion>latest</LangVersion>
+	<RepositoryUrl>https://github.com/ChengYen-Tang/RLEnv</RepositoryUrl>
+	<Authors>Kenneth Tang</Authors>
+	<PackageProjectUrl>https://RLEnv.kttw.xyz</PackageProjectUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
