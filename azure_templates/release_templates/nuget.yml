@@ -9,12 +9,15 @@ steps:
   displayName: Pack
   inputs: 
     command: 'pack'
-    outputDir: '$(Build.ArtifactStagingDirectory)/Packages
+    outputDir: '$(Build.ArtifactStagingDirectory)/Packages'
 
-- task: DotNetCoreCLI@2
-  displayName: Push
+- task: NuGetToolInstaller@1
   inputs:
-    command: 'push'
-    searchPatternPush: '$(Build.ArtifactStagingDirectory)/Packages/*.nupkg;!$(Build.ArtifactStagingDirectory)/Packages/*Tests.nupkg'
-    nugetFeedType: 'external'
-    externalEndPoint: 'Nuget'
+    versionSpec: 6.x
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    nuGetFeedType: external
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/Packages/*.nupkg;!$(Build.ArtifactStagingDirectory)/Packages/*Tests.nupkg'
+    publishFeedCredentials: Nuget

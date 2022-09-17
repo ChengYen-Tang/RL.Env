@@ -67,4 +67,4 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: azure_templates/release_templates/Nuget.yml
+    - template: azure_templates/release_templates/nuget.yml
