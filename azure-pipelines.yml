@@ -1,6 +1,6 @@
 variables:
   buildConfiguration: 'Release'
-  version: '1.0.0.0'
+  version: '1.0.1.0'
 
 stages:
 - stage: Build_and_Test
@@ -55,3 +55,16 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - template: azure_templates/release_templates/create_github_release.yml
+
+- stage: Nuget_Release
+  displayName: 'Publish the current version to Nuget'
+  dependsOn:
+    - Build_and_Test
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
+  jobs:
+  - job: Publish
+    displayName: 'Publish new version'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: azure_templates/release_templates/Nuget.yml

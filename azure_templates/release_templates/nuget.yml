@@ -1,0 +1,20 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Pack
+  inputs: 
+    command: 'pack'
+    outputDir: '$(Build.ArtifactStagingDirectory)/Packages
+
+- task: DotNetCoreCLI@2
+  displayName: Push
+  inputs:
+    command: 'push'
+    searchPatternPush: '$(Build.ArtifactStagingDirectory)/Packages/*.nupkg;!$(Build.ArtifactStagingDirectory)/Packages/*Tests.nupkg'
+    nugetFeedType: 'external'
+    externalEndPoint: 'Nuget'

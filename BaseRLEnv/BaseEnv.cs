@@ -70,6 +70,13 @@ public abstract class BaseEnv<T>
     /// </param>
     /// <returns></returns>
     public abstract ndarray? Render(RanderMode randerMode);
+
+    /// <summary>
+    /// Override close in your subclass to perform any necessary cleanup.
+    ///
+    /// Environments will automatically close() themselves when garbage collected or when the program exits.
+    /// </summary>
+    public virtual void Close() { }
 }
 
 public enum RanderMode
