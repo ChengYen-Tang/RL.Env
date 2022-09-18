@@ -1,0 +1,57 @@
+variables:
+  buildConfiguration: 'Release'
+  version: '1.0.0.0'
+
+stages:
+- stage: Build_and_Test
+  displayName: 'Build and test projects'
+  jobs:
+  - job: 'Ubuntu'
+    displayName: 'Build and test project on Ubuntu platform'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: azure_templates/tests.yml
+
+  - job: 'Windows'
+    displayName: 'Build and test project on Windows platform'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: azure_templates/windows_tests.yml
+
+  - job: 'MacOS'
+    displayName: 'Build and test project on MacOS platform'
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+    - template: azure_templates/tests.yml
+
+- stage: IntelliCode
+  displayName: 'Train intelliCode model'
+  dependsOn:
+    - Build_and_Test
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  jobs:
+  - job: 'Training'
+    displayName: 'Train intelliCode model'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: Visual Studio IntelliCode Team Model Training@0
+      inputs:
+        branch: 'master'
+        intelliCodeServiceEndpoint: 'IntelliCode'
+
+- stage: Github_Release
+  displayName: 'Publish the current version to Github'
+  dependsOn:
+    - Build_and_Test
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
+  jobs:
+  - job: Create
+    displayName: 'Create GitHub Release'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: azure_templates/release_templates/create_github_release.yml

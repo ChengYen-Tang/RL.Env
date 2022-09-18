@@ -1,0 +1,12 @@
+steps:
+- task: GithubRelease@0 
+  displayName: 'Create GitHub Release'      
+  inputs:
+    gitHubConnection: GithubRelease
+    repositoryName: ChengYen-Tang/RLEnv
+    action: 'create'
+    tagSource: 'manual'
+    tag: $(version)
+    addChangeLog: false
+    releaseNotesSource: 'file'
+    releaseNotesFile: './ReleaseNotes/$(version).md'
