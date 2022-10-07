@@ -64,6 +64,13 @@ public abstract class DigitalSpace : Space
         return Result.Ok();
     }
 
+    public override string ToString()
+    {
+        string baseString = base.ToString();
+        baseString += $"Low: {Low}\nHigh: {High}";
+        return base.ToString();
+    }
+
     protected abstract Result CheckType(dtype type);
 
     private void CheckInitParameter(ndarray low, ndarray high, shape shape, dtype type)

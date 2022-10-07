@@ -21,4 +21,7 @@ public sealed class RewardRange
         if (reward > Max || reward < Min)
             throw new Error($"Reward must be >= {Min}, and reward must be <= {Max}.");
     }
+
+    public override string ToString()
+        => $"[Max: {Max}, Min: {Min}]";
 }

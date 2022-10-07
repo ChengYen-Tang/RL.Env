@@ -63,6 +63,9 @@ public abstract class Space
         return rndSeed;
     }
 
+    public override string ToString()
+        => $"Space Type: {GetType().Name}\nShape: {Shape}\ndType: {Type}";
+
     private static void CheckInitParameter(shape shape, dtype type)
     {
         ArgumentNullException.ThrowIfNull(shape);

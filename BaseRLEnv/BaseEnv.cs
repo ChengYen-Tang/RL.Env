@@ -45,7 +45,7 @@ public abstract class BaseEnv<T>
     /// </param>
     /// <param name="options"> Additional information to specify how the environment is reset (optional, depending on the specific environment) </param>
     /// <returns></returns>
-    public abstract ResetResult Reset(uint? seed = null, Dictionary<string, dynamic>? options = null);
+    public abstract ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null);
     
     /// <summary>
     /// Run one timestep of the environment’s dynamics.
@@ -77,6 +77,9 @@ public abstract class BaseEnv<T>
     /// Environments will automatically close() themselves when garbage collected or when the program exits.
     /// </summary>
     public virtual void Close() { }
+
+    public override string ToString()
+        => $"ActionSpace: {ActionSpace}\nObservationSpace: {ObservationSpace}\nRewardRange: {RewardRange}";
 }
 
 public enum RanderMode

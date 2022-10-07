@@ -54,7 +54,7 @@ public class CheckConditionsEnv<T> : BaseEnv<T>
     /// </param>
     /// <param name="options"> Additional information to specify how the environment is reset (optional, depending on the specific environment) </param>
     /// <returns></returns>
-    public override ResetResult Reset(uint? seed = null, Dictionary<string, dynamic>? options = null)
+    public override ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null)
     {
         ResetResult result =  baseEnv.Reset(seed, options);
         try

@@ -10,11 +10,12 @@
 	<PackageProjectUrl>https://RLEnv.kttw.xyz</PackageProjectUrl>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	<Description>RLEnv is an open source dotnet library for developing and comparing reinforcement learning algorithms by providing a standard API to communicate between learning algorithms and environments, as well a standard set of environments compliant with that API.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentResults" Version="3.11.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.80.3" />
+    <PackageReference Include="FluentResults" Version="3.13.0" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.80.4" />
   </ItemGroup>
   <ItemGroup>
 	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

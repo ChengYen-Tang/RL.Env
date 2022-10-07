@@ -9,7 +9,7 @@ public class CheckConditionsEnvTests
 {
     private class MockEnv : BaseEnv<DigitalSpace>
     {
-        public Func<uint?, Dictionary<string, dynamic>?, ResetResult> ResetCallback { get; set; } = null!;
+        public Func<uint?, Dictionary<string, object>?, ResetResult> ResetCallback { get; set; } = null!;
         public Func<ndarray, StepResult> StepCallback { get; set; } = null!;
 
         public MockEnv()
@@ -22,7 +22,7 @@ public class CheckConditionsEnvTests
         public override ndarray? Render(RanderMode randerMode)
             => throw new NotImplementedException();
 
-        public override ResetResult Reset(uint? seed = null, Dictionary<string, dynamic>? options = null)
+        public override ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null)
             => ResetCallback(seed, options);
 
         public override StepResult Step(ndarray action)
@@ -33,7 +33,7 @@ public class CheckConditionsEnvTests
     public void TestAllStepCorrect()
     {
         MockEnv mockEnv = new();
-        mockEnv.ResetCallback = (uint? _, Dictionary<string, dynamic>? _) => new(mockEnv.ObservationSpace.Sample(), new());
+        mockEnv.ResetCallback = (uint? _, Dictionary<string, object>? _) => new(mockEnv.ObservationSpace.Sample(), new());
         mockEnv.StepCallback = (ndarray _) => new(mockEnv.ObservationSpace.Sample(), 5, false, false, new());
         CheckConditionsEnv<DigitalSpace> env = new(mockEnv);
         env.Reset();
@@ -49,7 +49,7 @@ public class CheckConditionsEnvTests
     public void TestRewardError()
     {
         MockEnv mockEnv = new();
-        mockEnv.ResetCallback = (uint? _, Dictionary<string, dynamic>? _) => new(mockEnv.ObservationSpace.Sample(), new());
+        mockEnv.ResetCallback = (uint? _, Dictionary<string, object>? _) => new(mockEnv.ObservationSpace.Sample(), new());
         mockEnv.StepCallback = (ndarray _) => new(mockEnv.ObservationSpace.Sample(), 6, false, false, new());
         CheckConditionsEnv<DigitalSpace> env = new(mockEnv);
         env.Reset();
@@ -65,7 +65,7 @@ public class CheckConditionsEnvTests
     public void TestResetObservationError()
     {
         MockEnv mockEnv = new();
-        mockEnv.ResetCallback = (uint? _, Dictionary<string, dynamic>? _) => new(new(), new());
+        mockEnv.ResetCallback = (uint? _, Dictionary<string, object>? _) => new(new(), new());
         mockEnv.StepCallback = (ndarray _) => new(mockEnv.ObservationSpace.Sample(), 5, false, false, new());
         CheckConditionsEnv<DigitalSpace> env = new(mockEnv);
         env.Reset();
@@ -76,7 +76,7 @@ public class CheckConditionsEnvTests
     public void TestStepObservationError()
     {
         MockEnv mockEnv = new();
-        mockEnv.ResetCallback = (uint? _, Dictionary<string, dynamic>? _) => new(mockEnv.ObservationSpace.Sample(), new());
+        mockEnv.ResetCallback = (uint? _, Dictionary<string, object>? _) => new(mockEnv.ObservationSpace.Sample(), new());
         mockEnv.StepCallback = (ndarray _) => new(new(), 5, false, false, new());
         CheckConditionsEnv<DigitalSpace> env = new(mockEnv);
         env.Reset();

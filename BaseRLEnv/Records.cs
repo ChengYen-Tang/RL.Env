@@ -3,7 +3,7 @@
 /// <summary></summary>
 /// <param name="Observation"> Observation of the initial state. This will be an element of observation_space (typically a numpy array) and is analogous to the observation returned by step(). </param>
 /// <param name="Info"> This dictionary contains auxiliary information complementing observation. It should be analogous to the info returned by step(). </param>
-public record ResetResult(ndarray Observation, Dictionary<string, dynamic> Info);
+public record ResetResult(ndarray Observation, Dictionary<string, object> Info);
 /// <summary></summary>
 /// <param name="Observation"> this will be an element of the environment’s observation_space. This may, for instance, be a numpy array containing the positions and velocities of certain objects. </param>
 /// <param name="Reward"> The amount of reward returned as a result of taking the action. </param>
@@ -18,4 +18,4 @@ public record ResetResult(ndarray Observation, Dictionary<string, dynamic> Info)
 /// contain: metrics that describe the agent’s performance state, variables that are hidden from observations, or individual reward terms that are combined to produce the total reward.
 /// It also can contain information that distinguishes truncation and termination, however this is deprecated in favour of returning two booleans, and will be removed in a future version.
 /// </param>
-public record StepResult(ndarray Observation, double Reward, bool Terminated, bool Truncated, Dictionary<string, dynamic> Info);
+public record StepResult(ndarray Observation, double Reward, bool Terminated, bool Truncated, Dictionary<string, object> Info);
