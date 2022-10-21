@@ -18,12 +18,28 @@ public class MultiBinary : DigitalSpace
 {
     private static readonly dtype defaultType = np.UInt8;
 
-    public MultiBinary(shape shape, uint? seed = null)
-    : base(np.full(shape, 0, defaultType), np.full(shape, 1, defaultType), shape, defaultType, seed)
+    public MultiBinary(int shape, uint? seed = null)
+        : this(shape, defaultType, seed)
     { }
 
+    public MultiBinary(int shape, np.random npRandom)
+        : this(shape, defaultType, npRandom)
+    { }
+
+    public MultiBinary(shape shape, uint? seed = null)
+        : this(shape, defaultType, seed)
+    { }
+    
     public MultiBinary(shape shape, np.random npRandom)
-    : base(np.full(shape, 0, defaultType), np.full(shape, 1, defaultType), shape, defaultType, npRandom)
+        : this(shape, defaultType, npRandom)
+    { }
+
+    public MultiBinary(int shape, dtype type, uint? seed = null)
+        : this(new shape(shape), type, seed)
+    { }
+    
+    public MultiBinary(int shape, dtype type, np.random npRandom)
+        : this(new shape(shape), type, npRandom)
     { }
 
     public MultiBinary(shape shape, dtype type, uint? seed = null)
@@ -31,7 +47,7 @@ public class MultiBinary : DigitalSpace
     { }
 
     public MultiBinary(shape shape, dtype type, np.random npRandom)
-    : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom)
+        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom)
     { }
 
     protected override Result CheckType(dtype type)

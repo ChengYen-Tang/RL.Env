@@ -25,6 +25,14 @@ public class Box : DigitalSpace
         : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, npRandom)
     { }
 
+    public Box(ndarray low, ndarray high, uint? seed = null)
+        : this(low, high, low.shape, low.Dtype, seed)
+    => CheckBounds(low, high);
+
+    public Box(ndarray low, ndarray high, np.random npRandom)
+        : this(low, high, low.shape, low.Dtype, npRandom)
+    => CheckBounds(low, high);
+
     public Box(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
         : base(low, high, shape, type, seed) { }
 
@@ -38,5 +46,13 @@ public class Box : DigitalSpace
             type == np.Float32 || type == np.Float64)
             return Result.Ok();
         return Result.Fail("Box only supports numeric types, but not support Decimal type.");
+    }
+
+    private void CheckBounds(ndarray low, ndarray high)
+    {
+        if (low.shape != high.shape)
+            throw new ArgumentException("low and high must have the same shape.");
+        if (low.Dtype != high.Dtype)
+            throw new ArgumentException("low and high must have the same dtype.");
     }
 }

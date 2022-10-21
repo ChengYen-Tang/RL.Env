@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentResults" Version="3.13.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.80.4" />
+    <PackageReference Include="FluentResults" Version="3.14.0" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.80.5" />
   </ItemGroup>
   <ItemGroup>
 	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

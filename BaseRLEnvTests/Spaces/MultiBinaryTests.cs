@@ -25,7 +25,7 @@ public class MultiBinaryTests
     [TestMethod]
     public void TestCheckInitParameterCheckSupportType(dtype type)
     {
-        MultiBinary _ = new(new(2, 3), type);
+        MultiBinary _ = new(new shape(2, 3), type);
     }
 
     [ExpectedException(typeof(ArgumentException), "MultiBinary only supports int and uint types.")]
@@ -33,14 +33,14 @@ public class MultiBinaryTests
     [TestMethod]
     public void TestCheckInitParameterCheckNotSupportType(dtype type)
     {
-        MultiBinary _ = new(new(2, 3), type);
+        MultiBinary _ = new(new shape(2, 3), type);
     }
 
     private MultiBinary multiBinary = null!;
 
     [TestInitialize]
     public void Init()
-        => multiBinary = new(new(2, 3));
+        => multiBinary = new(new shape(2, 3));
 
     [TestMethod]
     public void TestSample()

@@ -11,14 +11,12 @@
 /// </summary>
 public class MultiDiscrete : DigitalSpace
 {
-    private static readonly dtype defaultType = np.Int32;
-
     public MultiDiscrete(ndarray number, uint? seed = null)
-    : base(np.full(number.shape, 0, defaultType), number - 1, number.shape, defaultType, seed)
+    : base(np.full(number.shape, 0, number.Dtype), number - 1, number.shape, number.Dtype, seed)
     { }
 
     public MultiDiscrete(ndarray number, np.random npRandom)
-        : base(np.full(number.shape, 0, defaultType), number - 1, number.shape, defaultType, npRandom)
+        : base(np.full(number.shape, 0, number.Dtype), number - 1, number.shape, number.Dtype, npRandom)
     { }
 
     public MultiDiscrete(ndarray number, dtype type, uint? seed = null)
