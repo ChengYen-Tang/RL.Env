@@ -11,21 +11,23 @@
 /// </summary>
 public class MultiDiscrete : DigitalSpace
 {
-    public MultiDiscrete(ndarray number, uint? seed = null)
-    : base(np.full(number.shape, 0, number.Dtype), number - 1, number.shape, number.Dtype, seed)
-    { }
+    public readonly ndarray Nvec;
 
-    public MultiDiscrete(ndarray number, np.random npRandom)
-        : base(np.full(number.shape, 0, number.Dtype), number - 1, number.shape, number.Dtype, npRandom)
-    { }
+    public MultiDiscrete(ndarray nvec, uint? seed = null)
+        : base(np.full(nvec.shape, 0, nvec.Dtype), nvec - 1, nvec.shape, nvec.Dtype, seed)
+        => Nvec = nvec;
 
-    public MultiDiscrete(ndarray number, dtype type, uint? seed = null)
-        : base(np.full(number.shape, 0, type), number - 1, number.shape, type, seed)
-    { }
+    public MultiDiscrete(ndarray nvec, np.random npRandom)
+        : base(np.full(nvec.shape, 0, nvec.Dtype), nvec - 1, nvec.shape, nvec.Dtype, npRandom)
+        => Nvec = nvec;
 
-    public MultiDiscrete(ndarray number, dtype type, np.random npRandom)
-        : base(np.full(number.shape, 0, type), number - 1, number.shape, type, npRandom)
-    { }
+    public MultiDiscrete(ndarray nvec, dtype type, uint? seed = null)
+        : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, seed)
+        => Nvec = nvec;
+
+    public MultiDiscrete(ndarray nvec, dtype type, np.random npRandom)
+        : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, npRandom)
+        => Nvec = nvec;
 
     protected override Result CheckType(dtype type)
     {
