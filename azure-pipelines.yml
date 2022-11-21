@@ -18,7 +18,7 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    - template: azure_templates/windows_tests.yml
+    - template: azure_templates/tests.yml
 
   - job: 'MacOS'
     displayName: 'Build and test project on MacOS platform'

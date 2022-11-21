@@ -13,7 +13,6 @@ See [documentation](https://rlenv.kttw.xyz/) for more resources
 ||master|develop|hotfix|release|
 |----|----|----|----|----|
 |CodeQL|![CodeQL](https://github.com/ChengYen-Tang/RL.Env/workflows/CodeQL/badge.svg?branch=master)|![CodeQL](https://github.com/ChengYen-Tang/RL.Env/workflows/CodeQL/badge.svg?branch=develop)|![CodeQL](https://github.com/ChengYen-Tang/RL.Env/workflows/CodeQL/badge.svg?branch=hotfix)|![CodeQL](https://github.com/ChengYen-Tang/RL.Env/workflows/CodeQL/badge.svg?branch=release)|
-|Coverage|[![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/KennethTang/github/21/master)](https://dev.azure.com/KennethTang/Github/_build/latest?definitionId=21&branchName=master)|[![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/KennethTang/github/21/develop)](https://dev.azure.com/KennethTang/Github/_build/latest?definitionId=21&branchName=develop)|[![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/KennethTang/github/21/hotfix)](https://dev.azure.com/KennethTang/Github/_build/latest?definitionId=21&branchName=document)|[![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/KennethTang/github/21/release)](https://dev.azure.com/KennethTang/Github/_build/latest?definitionId=21&branchName=release)|
 
 ## Version
 Please go to the [ReleaseNotes](./ReleaseNotes/) folder to view the change log.
