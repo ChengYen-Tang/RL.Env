@@ -10,6 +10,7 @@ public abstract class Space
     public shape Shape { get; private init; } = null!;
     public dtype Type { get; private init; } = null!;
     public np.random NpRandom { get; private set; } = null!;
+    public abstract bool IsNpFlattenable { get; }
 
     public Space(shape shape, dtype type, np.random npRandom)
     {
@@ -62,6 +63,12 @@ public abstract class Space
         (NpRandom, uint rndSeed) = Seeding.NpRandom(seed);
         return rndSeed;
     }
+
+    /// <summary>
+    /// Return the number of dimensions a flattened equivalent of this space would have.
+    /// </summary>
+    /// <returns> The number of dimensions for the flattened spaces </returns>
+    public abstract long FlatDim();
 
     public override string ToString()
         => $"Space Type: {GetType().Name}\nShape: {Shape}\ndType: {Type}";

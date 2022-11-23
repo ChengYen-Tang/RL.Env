@@ -50,6 +50,11 @@ public class MultiBinary : DigitalSpace
         : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom)
     { }
 
+    /// <summary>
+    /// Checks whether this space can be flattened to a :class:`spaces.Box`.
+    /// </summary>
+    public override bool IsNpFlattenable => true;
+
     protected override Result CheckType(dtype type)
     {
         if (type == np.Int8 || type == np.Int16 || type == np.Int32 || type == np.Int64 ||
@@ -57,4 +62,7 @@ public class MultiBinary : DigitalSpace
             return Result.Ok();
         return Result.Fail("MultiBinary only supports int and uint types.");
     }
+
+    public override long FlatDim()
+        => Shape.iDims.Aggregate((total, next) => total * next);
 }

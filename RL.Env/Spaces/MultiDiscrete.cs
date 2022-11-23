@@ -29,6 +29,14 @@ public class MultiDiscrete : DigitalSpace
         : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, npRandom)
         => Nvec = nvec;
 
+    /// <summary>
+    /// Checks whether this space can be flattened to a :class:`spaces.Box`.
+    /// </summary>
+    public override bool IsNpFlattenable => true;
+
+    public override long FlatDim()
+        => Nvec.AsInt64Array().Sum();
+
     protected override Result CheckType(dtype type)
     {
         if (type == np.UInt8 || type == np.UInt16 || type == np.UInt32 || type == np.UInt64)

@@ -11,22 +11,31 @@
 public class Discrete : DigitalSpace
 {
     private static readonly dtype defaultType = np.Int32;
+    private readonly long n;
 
-    public Discrete(long number, long start = 0, uint? seed = null)
-        : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), number - 1 + start, defaultType), new(1), defaultType, seed)
-    { }
+    public Discrete(long n, long start = 0, uint? seed = null)
+        : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, seed)
+        => this.n = n;
 
-    public Discrete(long number, np.random npRandom, long start = 0)
-        : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), number - 1 + start, defaultType), new(1), defaultType, npRandom)
-    { }
+    public Discrete(long n, np.random npRandom, long start = 0)
+        : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, npRandom)
+        => this.n = n;
 
-    public Discrete(long number, dtype type, long start = 0, uint? seed = null)
-        : base(np.full(new shape(1), start, type), np.full(new shape(1), number - 1 + start, type), new(1), type, seed)
-    { }
+    public Discrete(long n, dtype type, long start = 0, uint? seed = null)
+        : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, seed)
+        => this.n = n;
 
-    public Discrete(long number, dtype type, np.random npRandom, long start = 0)
-        : base(np.full(new shape(1), start, type), np.full(new shape(1), number - 1 + start, type), new(1), type, npRandom)
-    { }
+    public Discrete(long n, dtype type, np.random npRandom, long start = 0)
+        : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, npRandom)
+        => this.n = n;
+
+    /// <summary>
+    /// Checks whether this space can be flattened to a :class:`spaces.Box`.
+    /// </summary>
+    public override bool IsNpFlattenable => true;
+
+    public override long FlatDim()
+        => n;
 
     protected override Result CheckType(dtype type)
     {

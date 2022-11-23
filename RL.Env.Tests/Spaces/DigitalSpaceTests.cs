@@ -131,6 +131,13 @@ public class MockDigitalSpace : DigitalSpace
     public MockDigitalSpace(ndarray low, ndarray high, shape shape, dtype type)
         : base(low, high, shape, type) { }
 
+    public override bool IsNpFlattenable => throw new NotImplementedException();
+
+    public override long FlatDim()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override Result CheckType(dtype type)
     {
         if (type == np.Float32)

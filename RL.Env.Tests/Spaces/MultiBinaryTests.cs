@@ -51,4 +51,17 @@ public class MultiBinaryTests
             Assert.IsTrue(result.IsSuccess);
         }
     }
+
+    public static ICollection<object[]> TestFlatDimData
+        => new[]
+        {
+            new object[] { new MultiBinary(8), 8 },
+            new object[] { new MultiBinary(new shape(2, 3)), 6 },
+        };
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestFlatDim(Space space, int flatDim)
+    {
+        Assert.AreEqual(space.FlatDim(), flatDim);
+    }
 }

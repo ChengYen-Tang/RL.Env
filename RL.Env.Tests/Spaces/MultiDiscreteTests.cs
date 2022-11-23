@@ -52,4 +52,17 @@ public class MultiDiscreteTests
             Assert.IsTrue(result.IsSuccess);
         }
     }
+
+    public static ICollection<object[]> TestFlatDimData
+        => new[]
+        {
+            new object[] { new MultiDiscrete(np.array(new uint[] { 2, 2 }, np.UInt32)), 4 },
+            new object[] { new MultiDiscrete(np.array(new uint[,] { { 2, 3 }, { 3, 2 } }, np.UInt32)), 10 },
+        };
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestFlatDim(Space space, int flatDim)
+    {
+        Assert.AreEqual(space.FlatDim(), flatDim);
+    }
 }

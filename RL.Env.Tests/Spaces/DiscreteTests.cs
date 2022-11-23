@@ -52,4 +52,17 @@ public class DiscreteTests
             Assert.IsTrue(result.IsSuccess);
         }
     }
+
+    public static ICollection<object[]> TestFlatDimData
+        => new[]
+        {
+            new object[] { new Discrete(3), 3 },
+            new object[] { new Discrete(3, -1), 3 },
+        };
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestFlatDim(Space space, int flatDim)
+    {
+        Assert.AreEqual(space.FlatDim(), flatDim);
+    }
 }

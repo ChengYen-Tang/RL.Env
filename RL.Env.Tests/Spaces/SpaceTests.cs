@@ -50,6 +50,13 @@ public class MockSpace : Space
     public MockSpace(shape shape, dtype type)
         : base(shape, type) { }
 
+    public override bool IsNpFlattenable => throw new NotImplementedException();
+
+    public override long FlatDim()
+    {
+        throw new NotImplementedException();
+    }
+
     public override ndarray Sample()
         => throw new NotImplementedException();
 }

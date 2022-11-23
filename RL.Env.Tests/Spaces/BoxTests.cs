@@ -59,4 +59,20 @@ public class BoxTests
             Assert.IsTrue(result.IsSuccess);
         }
     }
+
+    public static ICollection<object[]> TestFlatDimData
+        => new[]
+        {
+            new object[] { new Box(0.0, 1.0), 1 },
+            new object[] { new Box(0, np.Inf, new shape(2, 2)), 4 },
+            new object[] { new Box(np.array(new float[] { -10.0f, 0.0f }), np.array(new float[] { 10.0f, 10.0f })), 2 },
+            new object[] { new Box(-np.Inf, 0.0, new shape(2, 1)), 2 },
+            new object[] { new Box(0, np.Inf, new shape(2, 1)), 2 },
+        };
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestFlatDim(Space space, int flatDim)
+    {
+        Assert.AreEqual(space.FlatDim(), flatDim);
+    }
 }

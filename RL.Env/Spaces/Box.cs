@@ -17,6 +17,27 @@
 /// </summary>
 public class Box : DigitalSpace
 {
+    /// <summary>
+    /// Checks whether this space can be flattened to a :class:`spaces.Box`.
+    /// </summary>
+    public override bool IsNpFlattenable => true;
+
+    public Box(double low, double high, shape shape, uint? seed = null)
+    : this(low, high, shape, np.Float64, seed)
+    { }
+
+    public Box(double low, double high, shape shape, np.random npRandom)
+        : this(low, high, shape, np.Float64, npRandom)
+    { }
+
+    public Box(double low, double high, uint? seed = null)
+        : this(low, high, new(1), np.Float64, seed)
+    { }
+
+    public Box(double low, double high, np.random npRandom)
+        : this(low, high, new(1), np.Float64, npRandom)
+    { }
+
     public Box(double low, double high, shape shape, dtype type, uint? seed = null)
         : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, seed)
     { }
@@ -24,6 +45,14 @@ public class Box : DigitalSpace
     public Box(double low, double high, shape shape, dtype type, np.random npRandom)
         : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, npRandom)
     { }
+
+    public Box(ndarray low, ndarray high, shape shape, uint? seed = null)
+        : this(low, high, shape, low.Dtype, seed)
+    => Box.CheckBounds(low, high);
+
+    public Box(ndarray low, ndarray high, shape shape, np.random npRandom)
+        : this(low, high, shape, low.Dtype, npRandom)
+    => Box.CheckBounds(low, high);
 
     public Box(ndarray low, ndarray high, uint? seed = null)
         : this(low, high, low.shape, low.Dtype, seed)
@@ -55,4 +84,7 @@ public class Box : DigitalSpace
         if (low.Dtype != high.Dtype)
             throw new ArgumentException("low and high must have the same dtype.");
     }
+
+    public override long FlatDim()
+        => Shape.iDims.Aggregate((total, next) => total * next);
 }
