@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RL.Env.Utils.Serialization;
 
-internal class DtypeJsonConverter : JsonConverter<dtype>
+public class DtypeJsonConverter : JsonConverter<dtype>
 {
     public override dtype? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

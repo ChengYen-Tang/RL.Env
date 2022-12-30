@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RL.Env.Utils.Serialization;
 
-internal class RandomJsonConverter : JsonConverter<np.random>
+public class RandomJsonConverter : JsonConverter<np.random>
 {
     public override np.random? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

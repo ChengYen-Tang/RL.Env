@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace RL.Env.Utils.Serialization;
-internal class NdarrayJsonConverter : JsonConverter<ndarray>
+public class NdarrayJsonConverter : JsonConverter<ndarray>
 {
     public override ndarray? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
