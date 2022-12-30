@@ -1,14 +1,27 @@
-﻿namespace RL.Env.Spaces;
+﻿using RL.Env.Utils.Serialization;
+using System.Text.Json.Serialization;
+
+namespace RL.Env.Spaces;
 
 /// <summary>
 /// A Space is the set of all possible numerical values for an observation or action.
 /// </summary>
-public abstract class DigitalSpace : Space
+[JsonDerivedType(typeof(Box), typeDiscriminator: nameof(Box))]
+[JsonDerivedType(typeof(Discrete), typeDiscriminator: nameof(Discrete))]
+[JsonDerivedType(typeof(MultiBinary), typeDiscriminator: nameof(MultiBinary))]
+[JsonDerivedType(typeof(MultiDiscrete), typeDiscriminator: nameof(MultiDiscrete))]
+public abstract partial class DigitalSpace : Space
 {
+    [JsonConverter(typeof(NdarrayJsonConverter))]
     public ndarray Low { get; private init; } = null!;
+    [JsonConverter(typeof(NdarrayJsonConverter))]
     public ndarray High { get; private init; } = null!;
-    protected ndarray BoundedBelow { get; private set; } = null!;
-    protected ndarray BoundedAbove { get; private set; } = null!;
+    [JsonInclude]
+    [JsonConverter(typeof(NdarrayJsonConverter))]
+    public ndarray BoundedBelow { get; private set; } = null!;
+    [JsonInclude]
+    [JsonConverter(typeof(NdarrayJsonConverter))]
+    public ndarray BoundedAbove { get; private set; } = null!;
 
     public DigitalSpace(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
         : base(shape, type, seed)
@@ -27,6 +40,10 @@ public abstract class DigitalSpace : Space
         High = high;
         CoculateBounded();
     }
+
+    protected DigitalSpace(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
+        : base(shape, type, npRandom)
+        => (Low, High, BoundedBelow, BoundedAbove) = (low, high, boundedBelow, boundedAbove);
 
     /// <summary>
     /// Returns a sample from the space.
@@ -68,7 +85,7 @@ public abstract class DigitalSpace : Space
     {
         string baseString = base.ToString();
         baseString += $"Low: {Low}\nHigh: {High}";
-        return base.ToString();
+        return baseString;
     }
 
     protected abstract Result CheckType(dtype type);

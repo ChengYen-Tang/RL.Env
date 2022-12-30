@@ -1,4 +1,6 @@
-﻿namespace BaseRLEnvTests.Spaces;
+﻿using System.Text.Json;
+
+namespace BaseRLEnvTests.Spaces;
 
 [TestClass]
 public class DiscreteTests
@@ -64,5 +66,24 @@ public class DiscreteTests
     public void TestFlatDim(Space space, int flatDim)
     {
         Assert.AreEqual(space.FlatDim(), flatDim);
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestSerialization(DigitalSpace space, int _)
+    {
+        string jsonString = JsonSerializer.Serialize(space, RL.Env.Utils.Serialization.Options.SerializerOptions);
+        Discrete? discrete = JsonSerializer.Deserialize<Space>(jsonString, RL.Env.Utils.Serialization.Options.SerializerOptions) as Discrete;
+
+        Assert.IsNotNull(discrete);
+        Assert.IsTrue((space as Discrete)!.N == discrete!.N);
+        Assert.IsTrue(space.Type == discrete.Type);
+        Assert.IsTrue(space.NpRandom.randn() == discrete.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == discrete.NpRandom.randn());
+        Assert.IsTrue(space.Shape == discrete.Shape);
+        Assert.IsTrue(np.array_equal(space.High, discrete.High));
+        Assert.IsTrue(np.array_equal(space.Low, discrete.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, discrete.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, discrete.BoundedAbove));
     }
 }

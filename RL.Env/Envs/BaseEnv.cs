@@ -6,6 +6,7 @@ namespace RL.Env.Envs;
 public abstract class BaseEnv<T>
     where T : Space
 {
+    public np.random NpRandom { get; private set; } = null!;
     /// <summary>
     /// This attribute gives the format of valid actions.
     /// It is of datatype Space provided by Gym. For example,
@@ -45,7 +46,11 @@ public abstract class BaseEnv<T>
     /// </param>
     /// <param name="options"> Additional information to specify how the environment is reset (optional, depending on the specific environment) </param>
     /// <returns></returns>
-    public abstract ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null);
+    public virtual ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null)
+    {
+        (NpRandom, uint _) = Seeding.NpRandom(seed);
+        return null!;
+    }
 
     /// <summary>
     /// Run one timestep of the environment’s dynamics.

@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Tests.Spaces;
+﻿using System.Text.Json;
+
+namespace RL.Env.Tests.Spaces;
 
 [TestClass]
 public class MultiBinaryTests
@@ -63,5 +65,23 @@ public class MultiBinaryTests
     public void TestFlatDim(Space space, int flatDim)
     {
         Assert.AreEqual(space.FlatDim(), flatDim);
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestSerialization(DigitalSpace space, int _)
+    {
+        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SerializerOptions);
+        MultiBinary? multiBinary = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as MultiBinary;
+
+        Assert.IsNotNull(multiBinary);
+        Assert.IsTrue(space.Type == multiBinary.Type);
+        Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
+        Assert.IsTrue(space.Shape == multiBinary.Shape);
+        Assert.IsTrue(np.array_equal(space.High, multiBinary.High));
+        Assert.IsTrue(np.array_equal(space.Low, multiBinary.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, multiBinary.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, multiBinary.BoundedAbove));
     }
 }

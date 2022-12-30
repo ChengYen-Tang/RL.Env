@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Tests.Spaces;
+﻿using System.Text.Json;
+
+namespace RL.Env.Tests.Spaces;
 
 [TestClass]
 public class BoxTests
@@ -74,5 +76,23 @@ public class BoxTests
     public void TestFlatDim(Space space, int flatDim)
     {
         Assert.AreEqual(space.FlatDim(), flatDim);
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestSerialization(DigitalSpace space, int _)
+    {
+        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SerializerOptions);
+        Box? box = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as Box;
+
+        Assert.IsNotNull(box);
+        Assert.IsTrue(space.Type == box.Type);
+        Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());
+        Assert.IsTrue(space.Shape == box.Shape);
+        Assert.IsTrue(np.array_equal(space.High, box.High));
+        Assert.IsTrue(np.array_equal(space.Low, box.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, box.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, box.BoundedAbove));
     }
 }

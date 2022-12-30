@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Tests.Spaces;
+﻿using System.Text.Json;
+
+namespace RL.Env.Tests.Spaces;
 
 [TestClass]
 public class MultiDiscreteTests
@@ -64,5 +66,24 @@ public class MultiDiscreteTests
     public void TestFlatDim(Space space, int flatDim)
     {
         Assert.AreEqual(space.FlatDim(), flatDim);
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestSerialization(DigitalSpace space, int _)
+    {
+        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SerializerOptions);
+        MultiDiscrete? multiDiscrete = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as MultiDiscrete;
+
+        Assert.IsNotNull(multiDiscrete);
+        Assert.IsTrue(space.Type == multiDiscrete.Type);
+        Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());
+        Assert.IsTrue(space.Shape == multiDiscrete.Shape);
+        Assert.IsTrue(np.array_equal((space as MultiDiscrete)!.Nvec, multiDiscrete!.Nvec));
+        Assert.IsTrue(np.array_equal(space.High, multiDiscrete.High));
+        Assert.IsTrue(np.array_equal(space.Low, multiDiscrete.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, multiDiscrete.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, multiDiscrete.BoundedAbove));
     }
 }

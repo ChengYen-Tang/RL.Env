@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Spaces;
+﻿using System.Text.Json.Serialization;
+
+namespace RL.Env.Spaces;
 
 /// <summary>
 /// This class represents a finite subset of integers, more specifically a set of the form :math:`\{ a, a+1, \dots, a+n-1 \}`.
@@ -11,23 +13,29 @@
 public class Discrete : DigitalSpace
 {
     private static readonly dtype defaultType = np.Int32;
-    private readonly long n;
+    [JsonInclude]
+    public long N { get; init; }
 
     public Discrete(long n, long start = 0, uint? seed = null)
         : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, seed)
-        => this.n = n;
+        => N = n;
 
     public Discrete(long n, np.random npRandom, long start = 0)
         : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, npRandom)
-        => this.n = n;
+        => N = n;
 
     public Discrete(long n, dtype type, long start = 0, uint? seed = null)
         : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, seed)
-        => this.n = n;
+        => N = n;
 
     public Discrete(long n, dtype type, np.random npRandom, long start = 0)
         : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, npRandom)
-        => this.n = n;
+        => N = n;
+
+    [JsonConstructor]
+    public Discrete(long n, ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
+        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom)
+        => N = n;
 
     /// <summary>
     /// Checks whether this space can be flattened to a :class:`spaces.Box`.
@@ -35,7 +43,7 @@ public class Discrete : DigitalSpace
     public override bool IsNpFlattenable => true;
 
     public override long FlatDim()
-        => n;
+        => N;
 
     protected override Result CheckType(dtype type)
     {

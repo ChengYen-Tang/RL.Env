@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Spaces;
+﻿using System.Text.Json.Serialization;
+
+namespace RL.Env.Spaces;
 
 /// <summary>
 /// Elements of this space are binary arrays of a shape that is fixed during construction.
@@ -19,36 +21,32 @@ public class MultiBinary : DigitalSpace
     private static readonly dtype defaultType = np.UInt8;
 
     public MultiBinary(int shape, uint? seed = null)
-        : this(shape, defaultType, seed)
-    { }
+        : this(shape, defaultType, seed) { }
 
     public MultiBinary(int shape, np.random npRandom)
-        : this(shape, defaultType, npRandom)
-    { }
+        : this(shape, defaultType, npRandom) { }
 
     public MultiBinary(shape shape, uint? seed = null)
-        : this(shape, defaultType, seed)
-    { }
+        : this(shape, defaultType, seed) { }
 
     public MultiBinary(shape shape, np.random npRandom)
-        : this(shape, defaultType, npRandom)
-    { }
+        : this(shape, defaultType, npRandom) { }
 
     public MultiBinary(int shape, dtype type, uint? seed = null)
-        : this(new shape(shape), type, seed)
-    { }
+        : this(new shape(shape), type, seed) { }
 
     public MultiBinary(int shape, dtype type, np.random npRandom)
-        : this(new shape(shape), type, npRandom)
-    { }
+        : this(new shape(shape), type, npRandom) { }
 
     public MultiBinary(shape shape, dtype type, uint? seed = null)
-        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, seed)
-    { }
+        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, seed) { }
 
     public MultiBinary(shape shape, dtype type, np.random npRandom)
-        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom)
-    { }
+        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom) { }
+
+    [JsonConstructor]
+    public MultiBinary(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
+        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) { }
 
     /// <summary>
     /// Checks whether this space can be flattened to a :class:`spaces.Box`.

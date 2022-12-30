@@ -1,14 +1,23 @@
 ﻿using RL.Env.Utils;
+using RL.Env.Utils.Serialization;
+using System.Text.Json.Serialization;
 
 namespace RL.Env.Spaces;
 
 /// <summary>
 /// A Space is the set of all possible values for an observation or action.
 /// </summary>
-public abstract class Space
+[JsonDerivedType(typeof(Box), typeDiscriminator: nameof(Box))]
+[JsonDerivedType(typeof(Discrete), typeDiscriminator: nameof(Discrete))]
+[JsonDerivedType(typeof(MultiBinary), typeDiscriminator: nameof(MultiBinary))]
+[JsonDerivedType(typeof(MultiDiscrete), typeDiscriminator: nameof(MultiDiscrete))]
+public abstract partial class Space
 {
     public shape Shape { get; private init; } = null!;
+    [JsonConverter(typeof(DtypeJsonConverter))]
     public dtype Type { get; private init; } = null!;
+    [JsonInclude]
+    [JsonConverter(typeof(RandomJsonConverter))]
     public np.random NpRandom { get; private set; } = null!;
     public abstract bool IsNpFlattenable { get; }
 

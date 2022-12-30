@@ -1,4 +1,7 @@
-﻿namespace RL.Env.Spaces;
+﻿using RL.Env.Utils.Serialization;
+using System.Text.Json.Serialization;
+
+namespace RL.Env.Spaces;
 
 /// <summary>
 /// It is useful to represent game controllers or keyboards where each key can be represented as a discrete action space.
@@ -11,7 +14,8 @@
 /// </summary>
 public class MultiDiscrete : DigitalSpace
 {
-    public readonly ndarray Nvec;
+    [JsonConverter(typeof(NdarrayJsonConverter))]
+    public ndarray Nvec { get; init; }
 
     public MultiDiscrete(ndarray nvec, uint? seed = null)
         : base(np.full(nvec.shape, 0, nvec.Dtype), nvec - 1, nvec.shape, nvec.Dtype, seed)
@@ -27,6 +31,11 @@ public class MultiDiscrete : DigitalSpace
 
     public MultiDiscrete(ndarray nvec, dtype type, np.random npRandom)
         : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, npRandom)
+        => Nvec = nvec;
+
+    [JsonConstructor]
+    public MultiDiscrete(ndarray nvec, ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
+        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom)
         => Nvec = nvec;
 
     /// <summary>

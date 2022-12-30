@@ -1,4 +1,6 @@
-﻿namespace RL.Env.Spaces;
+﻿using System.Text.Json.Serialization;
+
+namespace RL.Env.Spaces;
 
 /// <summary>
 /// Specifically, a Box represents the Cartesian product of n closed intervals.
@@ -67,6 +69,10 @@ public class Box : DigitalSpace
 
     public Box(ndarray low, ndarray high, shape shape, dtype type, np.random npRandom)
         : base(low, high, shape, type, npRandom) { }
+
+    [JsonConstructor]
+    public Box(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
+        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) { }
 
     protected override Result CheckType(dtype type)
     {
