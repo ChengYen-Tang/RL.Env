@@ -27,8 +27,8 @@ public abstract partial class DigitalSpace : Space
         : base(shape, type, seed)
     {
         CheckInitParameter(low, high, shape, type);
-        Low = low;
-        High = high;
+        Low = low.astype(type, false);
+        High = high.astype(type, false);
         CoculateBounded();
     }
 
@@ -36,8 +36,8 @@ public abstract partial class DigitalSpace : Space
         : base(shape, type, npRandom)
     {
         CheckInitParameter(low, high, shape, type);
-        Low = low;
-        High = high;
+        Low = low.astype(type, false);
+        High = high.astype(type, false);
         CoculateBounded();
     }
 
@@ -101,10 +101,6 @@ public abstract partial class DigitalSpace : Space
             throw new ArgumentException("The low array does not match the shape defined by the condition.");
         if (high.shape != shape)
             throw new ArgumentException("The high array does not match the shape defined by the condition.");
-        if (low.Dtype != type)
-            throw new ArgumentException("The low array does not match the type defined by the condition.");
-        if (high.Dtype != type)
-            throw new ArgumentException("The high array does not match the type defined by the condition.");
         if (np.anyb(low > high))
             throw new ArgumentException("Low must be less than high.");
     }
@@ -114,4 +110,10 @@ public abstract partial class DigitalSpace : Space
         BoundedBelow = Low > double.NegativeInfinity;
         BoundedAbove = High < double.PositiveInfinity;
     }
+
+    public static bool operator ==(DigitalSpace obj1, DigitalSpace obj2)
+        => obj1.Equals(obj2);
+
+    public static bool operator !=(DigitalSpace obj1, DigitalSpace obj2)
+        => !obj1.Equals(obj2);
 }

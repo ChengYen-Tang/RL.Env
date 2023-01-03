@@ -86,6 +86,9 @@ public class BoxTests
         Box? box = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as Box;
 
         Assert.IsNotNull(box);
+        Assert.IsTrue(space == box);
+        Assert.IsFalse(space != box);
+        Assert.AreEqual(space, box);
         Assert.IsTrue(space.Type == box.Type);
         Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());
         Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());

@@ -76,6 +76,9 @@ public class MultiDiscreteTests
         MultiDiscrete? multiDiscrete = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as MultiDiscrete;
 
         Assert.IsNotNull(multiDiscrete);
+        Assert.IsTrue(space == multiDiscrete);
+        Assert.IsFalse(space != multiDiscrete);
+        Assert.AreEqual(space, multiDiscrete);
         Assert.IsTrue(space.Type == multiDiscrete.Type);
         Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());
         Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());

@@ -52,4 +52,32 @@ public class Discrete : DigitalSpace
             return Result.Ok();
         return Result.Fail("Discrete only supports int and uint types.");
     }
+
+    public static bool operator ==(Discrete obj1, Discrete obj2)
+        => obj1.Equals(obj2);
+
+    public static bool operator !=(Discrete obj1, Discrete obj2)
+        => !obj1.Equals(obj2);
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj is not Discrete)
+            return false;
+        Discrete space = (obj as Discrete)!;
+        if (N != space.N)
+            return false;
+        if (Type != space.Type)
+            return false;
+        if (Shape != space.Shape)
+            return false;
+        if (!np.array_equal(High, space.High))
+            return false;
+        if (!np.array_equal(Low, space.Low))
+            return false;
+        if (!np.array_equal(BoundedBelow, space.BoundedBelow))
+            return false;
+        if (!np.array_equal(BoundedAbove, space.BoundedAbove))
+            return false;
+        return true;
+    }
 }

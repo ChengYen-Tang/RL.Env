@@ -93,4 +93,30 @@ public class Box : DigitalSpace
 
     public override long FlatDim()
         => Shape.iDims.Aggregate((total, next) => total * next);
+
+    public static bool operator ==(Box obj1, Box obj2)
+        => obj1.Equals(obj2);
+
+    public static bool operator !=(Box obj1, Box obj2)
+        => !obj1.Equals(obj2);
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null or not Box)
+            return false;
+        Box space = (obj as Box)!;
+        if (Type != space.Type)
+            return false;
+        if (Shape != space.Shape)
+            return false;
+        if (!np.array_equal(High, space.High))
+            return false;
+        if (!np.array_equal(Low, space.Low))
+            return false;
+        if (!np.array_equal(BoundedBelow, space.BoundedBelow))
+            return false;
+        if (!np.array_equal(BoundedAbove, space.BoundedAbove))
+            return false;
+        return true;
+    }
 }

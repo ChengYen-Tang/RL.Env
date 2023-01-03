@@ -6,13 +6,13 @@ public class DigitalSpaceTests
     public static ICollection<object[]> SupportType
     => new[]
     {
-            new[] { np.Float32 }
+            new[] { np.Float32 }, new[] { np.Int32 }
     };
 
     public static ICollection<object[]> NotSupportType
         => new[]
         {
-            new[] { np.Int8 }, new[] { np.Int16 }, new[] { np.Int32 }, new[] { np.Int64 },
+            new[] { np.Int8 }, new[] { np.Int16 }, new[] { np.Int64 },
             new[] { np.UInt8 }, new[] { np.UInt16 }, new[] { np.UInt32 }, new[] { np.UInt64 },
             new[] { np.Strings },
             new[] { np.Object },
@@ -47,13 +47,13 @@ public class DigitalSpaceTests
         MockDigitalSpace _ = new(np.zeros(new shape(1, 2), type), np.ones(shape, type), shape, type);
     }
 
-    [ExpectedException(typeof(ArgumentException), "The low array does not match the type defined by the condition.")]
     [TestMethod]
-    public void TestCheckInitParameterCheckLowType()
+    public void TestLowAstype()
     {
         dtype type = np.Int32;
         shape shape = new(2, 3);
-        MockDigitalSpace _ = new(np.zeros(shape, np.Float32), np.ones(shape, type), shape, type);
+        MockDigitalSpace space = new(np.zeros(shape, np.Float32), np.ones(shape, type), shape, type);
+        Assert.AreEqual(space.Low.Dtype, type);
     }
 
     [ExpectedException(typeof(ArgumentException), "The high array does not match the shape defined by the condition.")]
@@ -65,13 +65,13 @@ public class DigitalSpaceTests
         MockDigitalSpace _ = new(np.zeros(shape, type), np.ones(new shape(1, 2), type), shape, type);
     }
 
-    [ExpectedException(typeof(ArgumentException), "The high array does not match the type defined by the condition.")]
     [TestMethod]
-    public void TestCheckInitParameterCheckHighType()
+    public void TestHighAstype()
     {
         dtype type = np.Int32;
         shape shape = new(2, 3);
-        MockDigitalSpace _ = new(np.zeros(shape, type), np.ones(shape, np.Float32), shape, type);
+        MockDigitalSpace space = new(np.zeros(shape, type), np.ones(shape, np.Float32), shape, type);
+        Assert.AreEqual(space.High.Dtype, type);
     }
 
     [ExpectedException(typeof(ArgumentException), "Low must be less than high.")]
@@ -140,7 +140,7 @@ public class MockDigitalSpace : DigitalSpace
 
     protected override Result CheckType(dtype type)
     {
-        if (type == np.Float32)
+        if (type == np.Float32 || type == np.Int32)
             return Result.Ok();
         return Result.Fail("Type error.");
     }

@@ -76,6 +76,9 @@ public class DiscreteTests
         Discrete? discrete = JsonSerializer.Deserialize<Space>(jsonString, RL.Env.Utils.Serialization.Options.SerializerOptions) as Discrete;
 
         Assert.IsNotNull(discrete);
+        Assert.IsTrue(space == discrete);
+        Assert.IsFalse(space != discrete);
+        Assert.AreEqual(space, discrete);
         Assert.IsTrue((space as Discrete)!.N == discrete!.N);
         Assert.IsTrue(space.Type == discrete.Type);
         Assert.IsTrue(space.NpRandom.randn() == discrete.NpRandom.randn());

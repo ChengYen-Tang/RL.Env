@@ -93,4 +93,10 @@ public abstract partial class Space
         CheckInitParameter(shape, type);
         ArgumentNullException.ThrowIfNull(npRandom);
     }
+
+    public static bool operator ==(Space obj1, Space obj2)
+        => obj1.Equals(obj2);
+
+    public static bool operator !=(Space obj1, Space obj2)
+        => !obj1.Equals(obj2);
 }

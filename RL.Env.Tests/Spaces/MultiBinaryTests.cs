@@ -75,6 +75,9 @@ public class MultiBinaryTests
         MultiBinary? multiBinary = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as MultiBinary;
 
         Assert.IsNotNull(multiBinary);
+        Assert.IsTrue(space == multiBinary);
+        Assert.IsFalse(space != multiBinary);
+        Assert.AreEqual(space, multiBinary);
         Assert.IsTrue(space.Type == multiBinary.Type);
         Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
         Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
