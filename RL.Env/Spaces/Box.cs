@@ -70,6 +70,7 @@ public class Box : DigitalSpace
     public Box(ndarray low, ndarray high, shape shape, dtype type, np.random npRandom)
         : base(low, high, shape, type, npRandom) { }
 
+    [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
     public Box(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
         : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) { }

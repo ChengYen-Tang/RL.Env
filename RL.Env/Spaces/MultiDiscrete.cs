@@ -33,6 +33,7 @@ public class MultiDiscrete : DigitalSpace
         : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, npRandom)
         => Nvec = nvec;
 
+    [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
     public MultiDiscrete(ndarray nvec, ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
         : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom)

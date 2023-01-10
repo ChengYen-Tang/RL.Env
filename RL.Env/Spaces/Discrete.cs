@@ -32,6 +32,7 @@ public class Discrete : DigitalSpace
         : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, npRandom)
         => N = n;
 
+    [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
     public Discrete(long n, ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
         : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom)

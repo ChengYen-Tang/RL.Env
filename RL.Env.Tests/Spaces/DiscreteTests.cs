@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json.Bson;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace BaseRLEnvTests.Spaces;
+namespace RL.Env.Tests.Spaces;
 
 [TestClass]
 public class DiscreteTests
@@ -70,10 +71,37 @@ public class DiscreteTests
 
     [DynamicData(nameof(TestFlatDimData))]
     [TestMethod]
-    public void TestSerialization(DigitalSpace space, int _)
+    public void TestSystemTextJsonSerialization(DigitalSpace space, int _)
     {
-        string jsonString = JsonSerializer.Serialize(space, RL.Env.Utils.Serialization.Options.SerializerOptions);
-        Discrete? discrete = JsonSerializer.Deserialize<Space>(jsonString, RL.Env.Utils.Serialization.Options.SerializerOptions) as Discrete;
+        string jsonString = JsonSerializer.Serialize(space, RL.Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions);
+        Discrete? discrete = JsonSerializer.Deserialize<Space>(jsonString, RL.Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions) as Discrete;
+
+        Assert.IsNotNull(discrete);
+        Assert.IsTrue(space == discrete);
+        Assert.IsFalse(space != discrete);
+        Assert.AreEqual(space, discrete);
+        Assert.IsTrue((space as Discrete)!.N == discrete!.N);
+        Assert.IsTrue(space.Type == discrete.Type);
+        Assert.IsTrue(space.NpRandom.randn() == discrete.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == discrete.NpRandom.randn());
+        Assert.IsTrue(space.Shape == discrete.Shape);
+        Assert.IsTrue(np.array_equal(space.High, discrete.High));
+        Assert.IsTrue(np.array_equal(space.Low, discrete.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, discrete.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, discrete.BoundedAbove));
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestNewtonsoftSerialization(DigitalSpace space, int _)
+    {
+        Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(RL.Env.Utils.Serialization.Options.NewtonsoftSerializerOptions);
+        using MemoryStream ms = new();
+        using BsonDataWriter writer = new(ms);
+        jsonSerializer.Serialize(writer, space);
+        ms.Position = 0;
+        using BsonDataReader reader = new(ms);
+        Discrete? discrete = jsonSerializer.Deserialize<Space>(reader) as Discrete;
 
         Assert.IsNotNull(discrete);
         Assert.IsTrue(space == discrete);

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json.Bson;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RL.Env.Tests.Spaces;
 
@@ -70,10 +71,37 @@ public class MultiDiscreteTests
 
     [DynamicData(nameof(TestFlatDimData))]
     [TestMethod]
-    public void TestSerialization(DigitalSpace space, int _)
+    public void TestSystemTextJsonSerialization(DigitalSpace space, int _)
     {
-        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SerializerOptions);
-        MultiDiscrete? multiDiscrete = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as MultiDiscrete;
+        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions);
+        MultiDiscrete? multiDiscrete = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions) as MultiDiscrete;
+
+        Assert.IsNotNull(multiDiscrete);
+        Assert.IsTrue(space == multiDiscrete);
+        Assert.IsFalse(space != multiDiscrete);
+        Assert.AreEqual(space, multiDiscrete);
+        Assert.IsTrue(space.Type == multiDiscrete.Type);
+        Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == multiDiscrete.NpRandom.randn());
+        Assert.IsTrue(space.Shape == multiDiscrete.Shape);
+        Assert.IsTrue(np.array_equal((space as MultiDiscrete)!.Nvec, multiDiscrete!.Nvec));
+        Assert.IsTrue(np.array_equal(space.High, multiDiscrete.High));
+        Assert.IsTrue(np.array_equal(space.Low, multiDiscrete.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, multiDiscrete.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, multiDiscrete.BoundedAbove));
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestNewtonsoftSerialization(DigitalSpace space, int _)
+    {
+        Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(Env.Utils.Serialization.Options.NewtonsoftSerializerOptions);
+        using MemoryStream ms = new();
+        using BsonDataWriter writer = new(ms);
+        jsonSerializer.Serialize(writer, space);
+        ms.Position = 0;
+        using BsonDataReader reader = new(ms);
+        MultiDiscrete? multiDiscrete = jsonSerializer.Deserialize<Space>(reader) as MultiDiscrete;
 
         Assert.IsNotNull(multiDiscrete);
         Assert.IsTrue(space == multiDiscrete);

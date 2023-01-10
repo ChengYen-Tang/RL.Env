@@ -44,6 +44,7 @@ public class MultiBinary : DigitalSpace
     public MultiBinary(shape shape, dtype type, np.random npRandom)
         : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom) { }
 
+    [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
     public MultiBinary(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
         : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) { }

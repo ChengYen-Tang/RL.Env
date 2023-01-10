@@ -1,5 +1,7 @@
 ﻿using RL.Env.Utils.Serialization;
 using System.Text.Json.Serialization;
+using JsonConverter = System.Text.Json.Serialization.JsonConverter;
+using JsonConverterAttribute = System.Text.Json.Serialization.JsonConverterAttribute;
 
 namespace RL.Env.Spaces;
 

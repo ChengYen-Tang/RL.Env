@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json.Bson;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RL.Env.Tests.Spaces;
 
@@ -80,10 +81,36 @@ public class BoxTests
 
     [DynamicData(nameof(TestFlatDimData))]
     [TestMethod]
-    public void TestSerialization(DigitalSpace space, int _)
+    public void TestSystemTextJsonSerialization(DigitalSpace space, int _)
     {
-        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SerializerOptions);
-        Box? box = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SerializerOptions) as Box;
+        string jsonString = JsonSerializer.Serialize(space, Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions);
+        Box? box = JsonSerializer.Deserialize<Space>(jsonString, Env.Utils.Serialization.Options.SystemTextJsonSerializerOptions) as Box;
+
+        Assert.IsNotNull(box);
+        Assert.IsTrue(space == box);
+        Assert.IsFalse(space != box);
+        Assert.AreEqual(space, box);
+        Assert.IsTrue(space.Type == box.Type);
+        Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());
+        Assert.IsTrue(space.NpRandom.randn() == box.NpRandom.randn());
+        Assert.IsTrue(space.Shape == box.Shape);
+        Assert.IsTrue(np.array_equal(space.High, box.High));
+        Assert.IsTrue(np.array_equal(space.Low, box.Low));
+        Assert.IsTrue(np.array_equal(space.BoundedBelow, box.BoundedBelow));
+        Assert.IsTrue(np.array_equal(space.BoundedAbove, box.BoundedAbove));
+    }
+
+    [DynamicData(nameof(TestFlatDimData))]
+    [TestMethod]
+    public void TestNewtonsoftSerialization(DigitalSpace space, int _)
+    {
+        Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(Env.Utils.Serialization.Options.NewtonsoftSerializerOptions);
+        using MemoryStream ms = new();
+        using BsonDataWriter writer = new(ms);
+        jsonSerializer.Serialize(writer, space);
+        ms.Position = 0;
+        using BsonDataReader reader = new(ms);
+        Box? box = jsonSerializer.Deserialize<Space>(reader) as Box;
 
         Assert.IsNotNull(box);
         Assert.IsTrue(space == box);
