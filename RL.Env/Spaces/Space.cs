@@ -23,17 +23,20 @@ public abstract partial class Space
     public np.random NpRandom { get; private set; } = null!;
     public abstract bool IsNpFlattenable { get; }
 
-    public Space(shape shape, dtype type, np.random npRandom)
+    public Space(shape shape, dtype type, Union<np.random, uint>? seed = null)
     {
-        CheckInitParameter(shape, type, npRandom);
-        (Shape, Type, NpRandom) = (shape, type, npRandom);
-    }
-
-    public Space(shape shape, dtype type, uint? seed = null)
-    {
-        CheckInitParameter(shape, type);
+        if (seed is null)
+        {
+            CheckInitParameter(shape, type);
+            Seed(null);
+        }
+        else
+        {
+            seed.MatchAction(
+                (n) => { CheckInitParameter(shape, type, n); NpRandom = n; },
+                (u) => { CheckInitParameter(shape, type); Seed(u); });
+        }
         (Shape, Type) = (shape, type);
-        Seed(seed);
     }
 
     /// <summary>

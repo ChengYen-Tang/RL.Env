@@ -25,17 +25,8 @@ public abstract partial class DigitalSpace : Space
     [JsonConverter(typeof(NdarrayJsonConverter))]
     public ndarray BoundedAbove { get; private set; } = null!;
 
-    public DigitalSpace(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
+    public DigitalSpace(ndarray low, ndarray high, shape shape, dtype type, Union<np.random, uint>? seed = null)
         : base(shape, type, seed)
-    {
-        CheckInitParameter(low, high, shape, type);
-        Low = low.astype(type, false);
-        High = high.astype(type, false);
-        CoculateBounded();
-    }
-
-    public DigitalSpace(ndarray low, ndarray high, shape shape, dtype type, np.random npRandom)
-        : base(shape, type, npRandom)
     {
         CheckInitParameter(low, high, shape, type);
         Low = low.astype(type, false);

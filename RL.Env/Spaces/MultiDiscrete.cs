@@ -17,20 +17,12 @@ public class MultiDiscrete : DigitalSpace
     [JsonConverter(typeof(NdarrayJsonConverter))]
     public ndarray Nvec { get; init; }
 
-    public MultiDiscrete(ndarray nvec, uint? seed = null)
+    public MultiDiscrete(ndarray nvec, Union<np.random, uint>? seed = null)
         : base(np.full(nvec.shape, 0, nvec.Dtype), nvec - 1, nvec.shape, nvec.Dtype, seed)
         => Nvec = nvec;
 
-    public MultiDiscrete(ndarray nvec, np.random npRandom)
-        : base(np.full(nvec.shape, 0, nvec.Dtype), nvec - 1, nvec.shape, nvec.Dtype, npRandom)
-        => Nvec = nvec;
-
-    public MultiDiscrete(ndarray nvec, dtype type, uint? seed = null)
+    public MultiDiscrete(ndarray nvec, dtype type, Union<np.random, uint>? seed = null)
         : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, seed)
-        => Nvec = nvec;
-
-    public MultiDiscrete(ndarray nvec, dtype type, np.random npRandom)
-        : base(np.full(nvec.shape, 0, type), nvec - 1, nvec.shape, type, npRandom)
         => Nvec = nvec;
 
     [Newtonsoft.Json.JsonConstructor]

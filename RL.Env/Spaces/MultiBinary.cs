@@ -19,35 +19,19 @@ namespace RL.Env.Spaces;
 public class MultiBinary : DigitalSpace
 {
     private static readonly dtype defaultType = np.UInt8;
+    public long N { get; init; }
 
-    public MultiBinary(int shape, uint? seed = null)
-        : this(shape, defaultType, seed) { }
+    public MultiBinary(Union<shape, int> shape, Union<np.random, uint>? seed = null)
+        : this(ConvertShape(shape), defaultType, seed) { }
 
-    public MultiBinary(int shape, np.random npRandom)
-        : this(shape, defaultType, npRandom) { }
-
-    public MultiBinary(shape shape, uint? seed = null)
-        : this(shape, defaultType, seed) { }
-
-    public MultiBinary(shape shape, np.random npRandom)
-        : this(shape, defaultType, npRandom) { }
-
-    public MultiBinary(int shape, dtype type, uint? seed = null)
-        : this(new shape(shape), type, seed) { }
-
-    public MultiBinary(int shape, dtype type, np.random npRandom)
-        : this(new shape(shape), type, npRandom) { }
-
-    public MultiBinary(shape shape, dtype type, uint? seed = null)
-        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, seed) { }
-
-    public MultiBinary(shape shape, dtype type, np.random npRandom)
-        : base(np.full(shape, 0, type), np.full(shape, 1, type), shape, type, npRandom) { }
+    public MultiBinary(Union<shape, int> shape, dtype type, Union<np.random, uint>? seed = null)
+        : base(np.full(ConvertShape(shape), 0, type), np.full(ConvertShape(shape), 1, type), ConvertShape(shape), type, seed)
+        => N = Shape.iDims.Aggregate((total, next) => total * next);
 
     [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
-    public MultiBinary(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom)
-        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) { }
+    public MultiBinary(ndarray low, ndarray high, ndarray boundedBelow, ndarray boundedAbove, shape shape, dtype type, np.random npRandom, long n)
+        : base(low, high, boundedBelow, boundedAbove, shape, type, npRandom) => N = n;
 
     /// <summary>
     /// Checks whether this space can be flattened to a :class:`spaces.Box`.
@@ -63,7 +47,7 @@ public class MultiBinary : DigitalSpace
     }
 
     public override long FlatDim()
-        => Shape.iDims.Aggregate((total, next) => total * next);
+        => N;
 
     public static bool operator ==(MultiBinary obj1, MultiBinary obj2)
         => obj1.Equals(obj2);
@@ -90,4 +74,13 @@ public class MultiBinary : DigitalSpace
             return false;
         return true;
     }
+
+    public static ndarray Flatten(ndarray obs)
+        => obs.flatten();
+
+    public ndarray ToMultiBinaryShape(ndarray actions)
+        => actions.reshape(Shape);
+
+    private static shape ConvertShape(Union<shape, int> shape)
+        => shape.MatchFunc((s) => s, (i) => new shape(i));
 }

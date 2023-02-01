@@ -16,20 +16,12 @@ public class Discrete : DigitalSpace
     [JsonInclude]
     public long N { get; init; }
 
-    public Discrete(long n, long start = 0, uint? seed = null)
+    public Discrete(long n, long start = 0, Union<np.random, uint>? seed = null)
         : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, seed)
         => N = n;
 
-    public Discrete(long n, np.random npRandom, long start = 0)
-        : base(np.full(new shape(1), start, defaultType), np.full(new shape(1), n - 1 + start, defaultType), new(1), defaultType, npRandom)
-        => N = n;
-
-    public Discrete(long n, dtype type, long start = 0, uint? seed = null)
+    public Discrete(long n, dtype type, long start = 0, Union<np.random, uint>? seed = null)
         : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, seed)
-        => N = n;
-
-    public Discrete(long n, dtype type, np.random npRandom, long start = 0)
-        : base(np.full(new shape(1), start, type), np.full(new shape(1), n - 1 + start, type), new(1), type, npRandom)
         => N = n;
 
     [Newtonsoft.Json.JsonConstructor]

@@ -109,9 +109,22 @@ public class MultiBinaryTests
         Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
         Assert.IsTrue(space.NpRandom.randn() == multiBinary.NpRandom.randn());
         Assert.IsTrue(space.Shape == multiBinary.Shape);
+        Assert.AreEqual((space as MultiBinary)!.N, multiBinary.N);
         Assert.IsTrue(np.array_equal(space.High, multiBinary.High));
         Assert.IsTrue(np.array_equal(space.Low, multiBinary.Low));
         Assert.IsTrue(np.array_equal(space.BoundedBelow, multiBinary.BoundedBelow));
         Assert.IsTrue(np.array_equal(space.BoundedAbove, multiBinary.BoundedAbove));
+    }
+
+    [TestMethod]
+    public void TestReshape()
+    {
+        ndarray array = np.array(new int[,] { { 1, 0, 1 }, { 0, 1, 0 } });
+        MultiBinary multiBinary = new(array.shape);
+        ndarray flattenArray = MultiBinary.Flatten(array);
+        Assert.AreEqual(1, flattenArray.shape.iDims.Length);
+        Assert.AreEqual(6, flattenArray.shape[0]);
+        ndarray array1 = multiBinary.ToMultiBinaryShape(flattenArray);
+        Assert.IsTrue(np.array_equal(array, array1));
     }
 }

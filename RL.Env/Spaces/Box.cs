@@ -24,51 +24,23 @@ public class Box : DigitalSpace
     /// </summary>
     public override bool IsNpFlattenable => true;
 
-    public Box(double low, double high, shape shape, uint? seed = null)
-    : this(low, high, shape, np.Float64, seed)
-    { }
+    public Box(double low, double high, shape shape, Union<np.random, uint>? seed = null)
+    : this(low, high, shape, np.Float64, seed) { }
 
-    public Box(double low, double high, shape shape, np.random npRandom)
-        : this(low, high, shape, np.Float64, npRandom)
-    { }
+    public Box(double low, double high, Union<np.random, uint>? seed = null)
+        : this(low, high, new(1), np.Float64, seed) { }
 
-    public Box(double low, double high, uint? seed = null)
-        : this(low, high, new(1), np.Float64, seed)
-    { }
+    public Box(double low, double high, shape shape, dtype type, Union<np.random, uint>? seed = null)
+        : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, seed) { }
 
-    public Box(double low, double high, np.random npRandom)
-        : this(low, high, new(1), np.Float64, npRandom)
-    { }
+    public Box(ndarray low, ndarray high, shape shape, Union<np.random, uint>? seed = null)
+        : this(low, high, shape, low.Dtype, seed) => CheckBounds(low, high);
 
-    public Box(double low, double high, shape shape, dtype type, uint? seed = null)
-        : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, seed)
-    { }
+    public Box(ndarray low, ndarray high, Union<np.random, uint>? seed = null)
+        : this(low, high, low.shape, low.Dtype, seed) => CheckBounds(low, high);
 
-    public Box(double low, double high, shape shape, dtype type, np.random npRandom)
-        : this(np.full(shape, low, type), np.full(shape, high, type), shape, type, npRandom)
-    { }
-
-    public Box(ndarray low, ndarray high, shape shape, uint? seed = null)
-        : this(low, high, shape, low.Dtype, seed)
-    => Box.CheckBounds(low, high);
-
-    public Box(ndarray low, ndarray high, shape shape, np.random npRandom)
-        : this(low, high, shape, low.Dtype, npRandom)
-    => Box.CheckBounds(low, high);
-
-    public Box(ndarray low, ndarray high, uint? seed = null)
-        : this(low, high, low.shape, low.Dtype, seed)
-    => Box.CheckBounds(low, high);
-
-    public Box(ndarray low, ndarray high, np.random npRandom)
-        : this(low, high, low.shape, low.Dtype, npRandom)
-    => Box.CheckBounds(low, high);
-
-    public Box(ndarray low, ndarray high, shape shape, dtype type, uint? seed = null)
+    public Box(ndarray low, ndarray high, shape shape, dtype type, Union<np.random, uint>? seed = null)
         : base(low, high, shape, type, seed) { }
-
-    public Box(ndarray low, ndarray high, shape shape, dtype type, np.random npRandom)
-        : base(low, high, shape, type, npRandom) { }
 
     [Newtonsoft.Json.JsonConstructor]
     [JsonConstructor]
