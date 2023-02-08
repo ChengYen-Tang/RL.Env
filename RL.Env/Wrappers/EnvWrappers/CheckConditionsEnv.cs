@@ -9,19 +9,11 @@ namespace RL.Env.Wrappers.EnvWrappers;
 ///Note: This Wrapper will check the content in each iteration, thus increasing the time complexity.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class CheckConditionsEnv<T> : BaseEnv<T>
+public class CheckConditionsEnv<T> : Wrapper<T>
     where T : Space
 {
-    private readonly BaseEnv<T> baseEnv;
-
     public CheckConditionsEnv(BaseEnv<T> baseEnv)
-    {
-        ArgumentNullException.ThrowIfNull(baseEnv);
-        this.baseEnv = baseEnv;
-        ActionSpace = baseEnv.ActionSpace;
-        ObservationSpace = baseEnv.ObservationSpace;
-        RewardRange = baseEnv.RewardRange;
-    }
+        : base(baseEnv) { }
 
     /// <summary>
     /// Compute the render frames as specified by render_mode attribute during initialization of the environment.
@@ -37,7 +29,7 @@ public class CheckConditionsEnv<T> : BaseEnv<T>
     /// </param>
     /// <returns></returns>
     public override ndarray? Render(RanderMode randerMode)
-        => baseEnv.Render(randerMode);
+        => base.Render(randerMode);
 
     /// <summary>
     /// Resets the environment to an initial state and returns the initial observation.
@@ -57,7 +49,7 @@ public class CheckConditionsEnv<T> : BaseEnv<T>
     /// <returns></returns>
     public override ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null)
     {
-        ResetResult result = baseEnv.Reset(seed, options);
+        ResetResult result = base.Reset(seed, options);
         try
         {
             ObservationSpace.CheckConditions(result.Observation);
@@ -86,7 +78,7 @@ public class CheckConditionsEnv<T> : BaseEnv<T>
         {
             throw new Error($"ActionSpace exception: {ex.Message}");
         }
-        StepResult result = baseEnv.Step(action);
+        StepResult result = base.Step(action);
         try
         {
             ObservationSpace.CheckConditions(result.Observation);

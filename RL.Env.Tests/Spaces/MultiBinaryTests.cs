@@ -122,9 +122,11 @@ public class MultiBinaryTests
         ndarray array = np.array(new int[,] { { 1, 0, 1 }, { 0, 1, 0 } });
         MultiBinary multiBinary = new(array.shape);
         ndarray flattenArray = MultiBinary.Flatten(array);
+        flattenArray = MultiBinary.Flatten(flattenArray);
         Assert.AreEqual(1, flattenArray.shape.iDims.Length);
         Assert.AreEqual(6, flattenArray.shape[0]);
         ndarray array1 = multiBinary.ToMultiBinaryShape(flattenArray);
+        array1 = multiBinary.ToMultiBinaryShape(array1);
         Assert.IsTrue(np.array_equal(array, array1));
     }
 }

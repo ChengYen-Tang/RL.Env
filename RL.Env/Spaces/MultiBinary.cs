@@ -76,10 +76,10 @@ public class MultiBinary : DigitalSpace
     }
 
     public static ndarray Flatten(ndarray obs)
-        => obs.flatten();
+        => obs.shape.iDims.Length == 1 ? obs : obs.flatten();
 
     public ndarray ToMultiBinaryShape(ndarray actions)
-        => actions.reshape(Shape);
+        => actions.shape == Shape ? actions : actions.reshape(Shape);
 
     private static shape ConvertShape(Union<shape, int> shape)
         => shape.MatchFunc((s) => s, (i) => new shape(i));

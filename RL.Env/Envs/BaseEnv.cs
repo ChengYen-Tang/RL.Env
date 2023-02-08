@@ -6,7 +6,9 @@ namespace RL.Env.Envs;
 public abstract class BaseEnv<T>
     where T : Space
 {
-    public np.random NpRandom { get; private set; } = null!;
+    public np.random NpRandom { get { if (npRandom == null) (npRandom, uint _) = Seeding.NpRandom(null); return npRandom; } }
+
+    private np.random npRandom = null!;
     /// <summary>
     /// This attribute gives the format of valid actions.
     /// It is of datatype Space provided by Gym. For example,
@@ -48,7 +50,8 @@ public abstract class BaseEnv<T>
     /// <returns></returns>
     public virtual ResetResult Reset(uint? seed = null, Dictionary<string, object>? options = null)
     {
-        (NpRandom, uint _) = Seeding.NpRandom(seed);
+        if (seed is not null)
+            (npRandom, uint _) = Seeding.NpRandom(seed);
         return null!;
     }
 
@@ -84,7 +87,7 @@ public abstract class BaseEnv<T>
     public virtual void Close() { }
 
     public override string ToString()
-        => $"ActionSpace: {ActionSpace}\nObservationSpace: {ObservationSpace}\nRewardRange: {RewardRange}";
+        => $"<{GetType().Name}>ActionSpace: {ActionSpace}\nObservationSpace: {ObservationSpace}\nRewardRange: {RewardRange}";
 }
 
 public enum RanderMode
